@@ -8,6 +8,8 @@ class TodoPage extends StatefulWidget {
 }
 
 class _TodoPageState extends State<TodoPage> {
+  final _formKey = GlobalKey<FormState>();
+
   @override
   void dispose() {
     bloc.dispose();
@@ -69,26 +71,45 @@ class _TodoPageState extends State<TodoPage> {
     return AlertDialog(
       title: Center(child: Text('Create Todo')),
       content: Container(
-        height: 150,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextField(
-              controller: bloc.titleController,
-              decoration: InputDecoration(labelText: 'Title'),
-            ),
-            TextField(
-              controller: bloc.descriptionController,
-              decoration: InputDecoration(labelText: 'Description'),
-            ),
-          ],
+        height: 180,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              TextFormField(
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter some title';
+                  } else {
+                    return null;
+                  }
+                },
+                controller: bloc.titleController,
+                decoration: InputDecoration(labelText: 'Title'),
+              ),
+              TextFormField(
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter some description';
+                  } else {
+                    return null;
+                  }
+                },
+                controller: bloc.descriptionController,
+                decoration: InputDecoration(labelText: 'Description'),
+              ),
+            ],
+          ),
         ),
       ),
       actions: <Widget>[
         FlatButton(
           onPressed: () {
-            bloc.createTodo();
-            Navigator.of(context).pop();
+            if (_formKey.currentState.validate()) {
+              bloc.createTodo();
+              Navigator.of(context).pop();
+            }
           },
           child: Text('Ok'),
         ),
