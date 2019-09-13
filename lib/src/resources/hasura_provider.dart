@@ -1,14 +1,15 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hasura_connect/hasura_connect.dart';
 import 'package:todo_list/src/models/todo_model.dart';
+import 'package:intl/intl.dart';
 
 class HasuraProvider {
   HasuraConnect connection = HasuraConnect(DotEnv().env['HASURA_URL']);
 
   Stream<List<TodoModel>> getTodos() {
     var query = '''
-      subscription {
-        todos {
+      subscription getTodos(\$date:date!){
+        todos (where: {date: {_eq: \$date}}){
           id
           title
           description
@@ -17,7 +18,10 @@ class HasuraProvider {
       }
     ''';
 
-    Snapshot snapshot = connection.subscription(query);
+    Snapshot snapshot = connection.subscription(query, variables: {
+      "date": new DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
+    });
+
     return snapshot.stream
         .map((jsonList) => TodoModel.fromJsonList(jsonList['data']['todos']));
   }

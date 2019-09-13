@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_calendar/flutter_calendar.dart';
+import 'package:intl/intl.dart';
 import 'package:todo_list/src/blocs/todo_bloc.dart';
 import 'package:todo_list/src/models/todo_model.dart';
 
@@ -19,6 +21,7 @@ class _TodoPageState extends State<TodoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: StreamBuilder<List<TodoModel>>(
           stream: bloc.todosController,
           builder: (context, AsyncSnapshot<List<TodoModel>> snapshot) {
@@ -29,8 +32,19 @@ class _TodoPageState extends State<TodoPage> {
             } else {
               return Column(
                 children: <Widget>[
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 20, top: 40, right: 20),
+                    child: Calendar(
+                      onDateSelected: (value) {
+                        print(value);
+                      },
+                      isExpandable: true,
+                    ),
+                  ),
                   Expanded(
                     child: ListView.builder(
+                      padding: EdgeInsets.all(0),
                       itemCount: snapshot.data.length,
                       itemBuilder: (context, index) {
                         return Dismissible(
