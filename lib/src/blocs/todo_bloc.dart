@@ -12,7 +12,6 @@ class TodoBloc {
   }
 
   String date = DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
-  var dateController = TextEditingController();
   var titleController = TextEditingController();
   var descriptionController = TextEditingController();
   var todosController = BehaviorSubject<List<TodoModel>>();

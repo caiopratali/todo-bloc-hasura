@@ -37,7 +37,8 @@ class _TodoPageState extends State<TodoPage> {
                         const EdgeInsets.only(left: 20, top: 40, right: 20),
                     child: Calendar(
                       onDateSelected: (value) {
-                        print(DateFormat("yyyy-MM-dd").format(value));
+                        String date = DateFormat("yyyy-MM-dd").format(value);
+                        print(date);
                       },
                       isExpandable: true,
                     ),
