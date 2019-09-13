@@ -4,7 +4,7 @@ import 'package:todo_list/src/resources/hasura_provider.dart';
 class Repository {
   HasuraProvider _hasuraProvider = HasuraProvider();
 
-  Stream<List<TodoModel>> show() => _hasuraProvider.getTodos();
+  Stream<List<TodoModel>> show({String date}) => _hasuraProvider.getTodos(date);
 
   Future create(String title, String description) =>
       _hasuraProvider.createTodo(title, description);

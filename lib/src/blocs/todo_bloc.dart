@@ -2,14 +2,17 @@ import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:todo_list/src/models/todo_model.dart';
 import 'package:todo_list/src/resources/repository.dart';
+import 'package:intl/intl.dart';
 
 class TodoBloc {
   final Repository _repository = Repository();
 
   TodoBloc() {
-    Observable(_repository.show()).pipe(todosController);
+    Observable(_repository.show(date: date)).pipe(todosController);
   }
 
+  String date = DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
+  var dateController = TextEditingController();
   var titleController = TextEditingController();
   var descriptionController = TextEditingController();
   var todosController = BehaviorSubject<List<TodoModel>>();
